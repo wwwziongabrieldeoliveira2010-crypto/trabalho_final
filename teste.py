@@ -327,3 +327,88 @@ def cadastrar_usuario():
     finally:
         cursor.close()
         db.close()
+
+def cadastrar_aluno():
+
+    usuario = autenticar()
+
+    if not usuario:
+        return
+
+    nome = input("Nome: ")
+    
+    if not validar_texto(nome):
+        print("Nome inválido.")
+        return
+
+    idade = input("Idade: ")
+
+    if not validacao_numero(idade):
+        print("Idade inválida.")
+        return
+    
+    cpf = input("CPF: ")
+
+    if not validar_cpf(cpf):
+        print("CPF inválido.")
+        return
+
+    db = conectar()
+    cursor = db.cursor()
+
+    query = """
+    INSERT INTO alunos
+    (nome, idade, cpf)
+    VALUES (%s, %s, %s)
+    """
+
+    try:
+
+        cursor.execute(
+            query,
+            (
+                nome,
+                int(idade),
+                cpf
+            )
+        )
+
+        db.commit()
+
+        registrar_logs(
+            usuario,
+            f"CADASTROU ALUNO {nome}"
+        )
+
+        print("Aluno cadastrado!")
+
+    except mysql.connector.Error as err:
+        print(f"Erro: {err}")
+
+    finally:
+        cursor.close()
+        db.close()
+
+
+def listar_alunos():
+
+    db = conectar()
+    cursor = db.cursor()
+
+    cursor.execute("SELECT * FROM alunos")
+
+    alunos = cursor.fetchall()
+
+    print("\n===== ALUNOS =====")
+
+    for aluno in alunos:
+
+        print(
+            f"ID: {aluno[0]} | "
+            f"Nome: {aluno[1]} | "
+            f"Idade: {aluno[2]} | "
+            f"CPF: {aluno[3]}"
+        )
+
+    cursor.close()
+    db.close()
