@@ -210,7 +210,7 @@ def autenticar(cargo_necessario=None):
 
     tentativas = 3
 
-    while tentativas > 0
+    while tentativas > 0:
 
         login_usuario = input("login: ")
         senha = input("senha: ")
@@ -224,14 +224,14 @@ def autenticar(cargo_necessario=None):
         WHERE login = %s
         """
 
-        cursor.execute(query(loguin_usuario,))
+        cursor.execute(query(login_usuario,))
         
         resultado = cursor.fetchone  
 
         cursor.close()
         db.close()
 
-         if resultado:
+        if resultado:
  
             senha_banco = resultado[0]
             cargo_usuario = resultado[1]
@@ -246,11 +246,11 @@ def autenticar(cargo_necessario=None):
                     print(
                         f"Acesso negado. "
                         f"Apenas {cargo_necessario}."
-                    )
+)
  
                     return None
  
-                registrar_log(
+                registrarlogs(
                     login_usuario,
                     "LOGIN REALIZADO"
                 )
@@ -306,7 +306,7 @@ def cadastrar_usuario():
     VALUES (%s, %s, %s)
     """
 
-     try:
+    try:
  
         cursor.execute(
             query,
