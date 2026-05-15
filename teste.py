@@ -206,3 +206,124 @@ VALUES (%s, %s,%s)
 """
 
 cursor.close()
+def autenticar(cargo_necessario=None):
+
+    tentativas = 3
+
+    while tentativas > 0
+
+        login_usuario = input("login: ")
+        senha = input("senha: ")
+
+        db = conectar()
+        cursor = db.cursor()
+
+        query = """
+        SELECT senha cargo
+        FROM usuarios
+        WHERE login = %s
+        """
+
+        cursor.execute(query(loguin_usuario,))
+        
+        resultado = cursor.fetchone  
+
+        cursor.close()
+        db.close()
+
+         if resultado:
+ 
+            senha_banco = resultado[0]
+            cargo_usuario = resultado[1]
+ 
+            if senha == senha_banco:
+ 
+                if (
+                    cargo_necessario
+                    and cargo_usuario != cargo_necessario
+                ):
+ 
+                    print(
+                        f"Acesso negado. "
+                        f"Apenas {cargo_necessario}."
+                    )
+ 
+                    return None
+ 
+                registrar_log(
+                    login_usuario,
+                    "LOGIN REALIZADO"
+                )
+ 
+                return login_usuario
+        
+        tentativas -= 1
+ 
+        print(
+            f"Login inválido. "
+            f"Tentativas restantes: {tentativas}"
+        )
+ 
+    print("Usuário bloqueado.")
+    return None
+
+def cadastrar_usuario():
+
+    login = input("Novo login: ")
+ 
+    if login.strip() == "":
+        print("Login vazio.")
+        return
+ 
+    senha = input("Senha: ")
+ 
+    if senha.strip() == "":
+        print("Senha vazia.")
+        return
+ 
+    print("\nCARGOS:")
+    print("1 - admin")
+    print("2 - professor")
+ 
+    opcao = input("Escolha: ")
+ 
+    if opcao == "1":
+        cargo = "admin"
+ 
+    elif opcao == "2":
+        cargo = "professor"
+ 
+    else:
+        print("Cargo inválido.")
+        return
+ 
+    db = conectar()
+    cursor = db.conectar()
+
+    query = """
+    INSERT INTO usuarios
+    (login, senha, cargo)
+    VALUES (%s, %s, %s)
+    """
+
+     try:
+ 
+        cursor.execute(
+            query,
+            (
+                login,
+                senha,
+                cargo
+            )
+        )
+ 
+        db.commit()
+ 
+        print("Usuário cadastrado!")
+ 
+    except mysql.connector.Error as err:
+        print(f"Erro: {err}")
+ 
+    finally:
+        cursor.close()
+        db.close()
