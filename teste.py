@@ -11,19 +11,16 @@ def conectar():
         database="boletim"
     )
 
-cursor = conexao.cursor()
+db = conectar()
 
-# =========================
-# CRIAR DATABASE
-# =========================
+cursor = db.cursor()
+
+
 
 cursor.execute("CREATE DATABASE IF NOT EXISTS boletim")
 
-cursor.execute("USE boletim")
 
-# =========================
-# USUÁRIOS
-# =========================
+
 
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS usuarios (
@@ -38,9 +35,7 @@ CREATE TABLE IF NOT EXISTS usuarios (
 )
 """)
 
-# =========================
-# ALUNOS
-# =========================
+
 
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS alunos (
@@ -55,9 +50,7 @@ CREATE TABLE IF NOT EXISTS alunos (
 )
 """)
 
-# =========================
-# MATÉRIAS
-# =========================
+
 
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS materias (
@@ -68,9 +61,7 @@ CREATE TABLE IF NOT EXISTS materias (
 )
 """)
 
-# =========================
-# INSERIR MATÉRIAS
-# =========================
+
 
 materias = [
     ('Matemática',),
@@ -86,9 +77,7 @@ INSERT IGNORE INTO materias (nome_materia)
 VALUES (%s)
 """, materias)
 
-# =========================
-# NOTAS
-# =========================
+
 
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS notas (
@@ -113,9 +102,7 @@ CREATE TABLE IF NOT EXISTS notas (
 )
 """)
 
-# =========================
-# LOGS
-# =========================
+
 
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS logs (
@@ -130,9 +117,7 @@ CREATE TABLE IF NOT EXISTS logs (
 )
 """)
 
-# =========================
-# VIEW BOLETIM
-# =========================
+
 
 cursor.execute("""
 CREATE OR REPLACE VIEW vw_boletim AS
@@ -159,16 +144,14 @@ m.nome_materia
 """)
 
 # Salvar alterações
-conexao.commit()
+db.commit()
 
 print("Banco de dados 'boletim' criado com sucesso!")
 
 # Fechar conexão
 cursor.close()
-conexao.close()
+db.close()
 
-import mysql.connector
-from datetime import datetime
 
 
 def conectar():
@@ -210,13 +193,16 @@ def validarcpf(cpf):
 def registrarlogs(usuario,acão):
 
 
-    cn = conectar()
+    db = conectar()
 
-    cursor = cn.conectar()
+    cursor = db.conectar()
+
+    cursor.execute()
 
 query = """
-    INSERT INTO logs
-    (usuario, ação)
-
-
+INSERT INTO logs
+(usuario, ação, data_hora)
+VALUES (%s, %s,%s)
 """
+
+cursor.close()
