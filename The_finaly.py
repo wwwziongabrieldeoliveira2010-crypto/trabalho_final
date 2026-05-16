@@ -154,15 +154,6 @@ db.close()
 
 
 
-def conectar():
-
-    return mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="Senac2026",
-        database="boletim"
-    )
-
 
 def validar_texto(texto):
 
