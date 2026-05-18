@@ -658,3 +658,92 @@ def remover_nota():
     finally:
         cursor.close()
         db.close
+
+def ver_boletim():
+ 
+    db = conectar()
+    cursor = db.cursor()
+ 
+    cursor.execute("""
+    SELECT *
+    FROM vw_boletim
+    """)
+ 
+    resultados = cursor.fetchall()
+
+    print("\n===== BOLETIM =====")
+
+    for aluno, materia, media in resultados:
+
+        situacao = "APROVADO"
+
+        if media < 6:
+            situacao = "REPROVADO"
+
+        print(
+            f"Alunos: {aluno} | "
+            f"Matéria: {materia} | "
+            f"Média: {media:.2f} | "
+            f"Situação: {situacao}"
+        )
+
+    cursor.close()
+    db.close()
+     
+def menu():
+ 
+    while True:
+ 
+        print("\n===== SISTEMA ESCOLAR =====")
+        print("1 - Cadastrar usuário")
+        print("2 - Cadastrar aluno")
+        print("3 - Listar alunos")
+        print("4 - Mostrar matérias")
+        print("5 - Lançar nota")
+        print("6 - Ver boletim")
+        print("7 - Listar notas")
+        print("8 - Editar nota")
+        print("9 - Remover nota")
+        print("0 - Sair")
+ 
+        opcao = input("Escolha: ")
+ 
+        if opcao == "1":
+            cadastrar_usuario()
+ 
+        elif opcao == "2":
+            cadastrar_aluno()
+ 
+        elif opcao == "3":
+            listar_alunos()
+ 
+        elif opcao == "4":
+            mostrar_materias()
+ 
+        elif opcao == "5":
+            lancar_nota()
+ 
+        elif opcao == "6":
+            ver_boletim()
+ 
+        elif opcao == "7":
+            listar_notas()
+ 
+        elif opcao == "8":
+            editar_nota()
+ 
+        elif opcao == "9":
+            remover_nota()
+ 
+        elif opcao == "0":
+ 
+            print("Sistema encerrado.")
+            break
+ 
+        else:
+            print("Opção inválida.")
+ 
+
+if __name__ == "__main__":
+    menu()
+ 
