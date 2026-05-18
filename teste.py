@@ -208,7 +208,7 @@ VALUES (%s, %s,%s)
 cursor.close()
 def autenticar(cargo_necessario=None):
 
-    tentativas = 3
+    tentativas = 5
 
     while tentativas > 0:
 
