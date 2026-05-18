@@ -173,7 +173,7 @@ def validar_texto(texto):
         return False
 
     return True
-def validadação_numero(numero):
+def validaçao_numero(numero):
     if numero.strip() == "":
         return False
 
@@ -343,13 +343,13 @@ def cadastrar_aluno():
 
     idade = input("Idade: ")
 
-    if not validacao_numero(idade):
+    if not validaçao_numero(idade):
         print("Idade inválida.")
         return
     
     cpf = input("CPF: ")
 
-    if not validar_cpf(cpf):
+    if not validarcpf(cpf):
         print("CPF inválido.")
         return
 
@@ -375,7 +375,7 @@ def cadastrar_aluno():
 
         db.commit()
 
-        registrar_logs(
+        registrarlogs(
             usuario,
             f"CADASTROU ALUNO {nome}"
         )
@@ -455,19 +455,19 @@ def lancar_nota():
     bimestre = input("Bimestre: ")
 
 
-    if not validacao_numero(id_aluno):
+    if not validaçao_numero(id_aluno):
         print("ID do aluno inválido.")
         return
 
-    if not validacao_numero(id_materia):
+    if not validaçao_numero(id_materia):
         print("ID da matéria inválido.")
         return
 
-    if not validacao_numero(nota):
+    if not validaçao_numero(nota):
         print("Nota inválida.")
         return
 
-    if not validacao_numero(bimestre):
+    if not validaçao_numero(bimestre):
         print("Bimestre inválido.")
         return
     
@@ -498,7 +498,7 @@ def lancar_nota():
 
         db.commit()
 
-        registrar_logs(
+        registrarlogs(
             usuario,
             f"NOTA LANÇADA PARA ALUNO {id_aluno}"
         )
@@ -552,3 +552,109 @@ def listar_notas():
 
     cursor.close()
     db.close()
+
+
+def editarnota():
+    usuario = autenticar()
+    if not usuario:
+        return
+    listar_notas()
+
+    id_nota = input("digite o ID  de sua nota: ")
+
+    if not validaçao_numero(id_nota):
+        print("ID invalido")
+        return
+    
+    nova_nota = input("digite sua nova nota: ")
+
+
+    if not validaçao_numero(nova_nota):
+        print("nota invalida")
+
+
+    novo_bimestre = input("digite um novo bimestre: ")
+
+    if not validaçao_numero(novo_bimestre):
+        print("nota invalida")
+        return
+    
+    db = conectar()
+    cursor = db.cursor()
+
+    query = """
+    UPDATE notas
+    SET
+        nota = %s,
+        bimestre = %s
+    WHERE id_nota = %s
+    """
+
+    try:
+
+        cursor.execute(
+            query,
+            (   
+                float(nova_nota),
+                int(novo_bimestre),
+                int(id_nota)
+            )
+
+        )
+
+        db.commit()
+
+        registrarlogs(
+            usuario,
+            f"EDITOU NOTA ID{id_nota}"
+        )
+
+        print("nota atualizada!")
+
+    except mysql.connector.Error as err:
+        print(f"o erro foi {err}")
+
+    finally:
+        cursor.close()
+        db.close()
+
+
+    
+    
+def remover_nota():
+
+    usuario = autenticar("admin")
+
+    if not usuario:
+        return
+    
+    listar_notas()
+
+    id_nota = input("digite o ID da nota que você que remover: ")
+    if not validaçao_numero(id_nota):
+        print("id invalida")
+        return
+    db = conectar()
+    cursor = db.cursor()
+    try:
+
+        cursor.execute(
+            "DELETE FROM notas WHERE id_nota = %s",
+            (int(id_nota),)
+        )
+
+        db.commit()
+
+        registrarlogs(
+            usuario,
+            f"REMOVEU NOTA ID {id_nota}"
+        )
+
+        print("nota removida")
+
+    except mysql.connector.Error as err:
+        print(f"o erro {err}")
+
+    finally:
+        cursor.close()
+        db.close
