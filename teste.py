@@ -412,3 +412,143 @@ def listar_alunos():
 
     cursor.close()
     db.close()
+
+def mostrar_materia(): 
+
+    db = conectar()
+    cursor = db.cursor()
+
+    cursor.execute("""
+    SELECT id_materia, nome_materia
+    FROM materias
+    """)
+
+    materias = cursor.fetchall()
+
+    print("\n======MATERIAS======")
+
+    for materia in materias:
+
+        print(
+                      f"ID: {materia[0]} | "
+            f"Nome: {materia[1]}"
+        )
+
+    cursor.close()
+    db.close()
+
+
+def lancar_nota():
+
+    usuario = autenticar()
+
+    if not usuario:
+        return
+    
+    listar_alunos()
+    mostrar_materia()
+
+
+    id_aluno = input("\nID do aluno: ")
+    id_materia = input("ID da matéria: ")
+    nota = input("Nota: ")
+    bimestre = input("Bimestre: ")
+
+
+    if not validacao_numero(id_aluno):
+        print("ID do aluno inválido.")
+        return
+
+    if not validacao_numero(id_materia):
+        print("ID da matéria inválido.")
+        return
+
+    if not validacao_numero(nota):
+        print("Nota inválida.")
+        return
+
+    if not validacao_numero(bimestre):
+        print("Bimestre inválido.")
+        return
+    
+    db = conectar()
+    cursor = db.cursor()
+
+    query = """
+    INSERT INTO notas
+    (
+        fk_id_aluno,
+        fk_id_materia,
+        nota,
+        bimestre
+    )
+    VALUES (%s, %s, %s, %s)
+    """
+    try:
+
+        cursor.execute(
+            query,
+            (
+                int(id_aluno),
+                int(id_materia),
+                float(nota),
+                int(bimestre)
+            )
+        )
+
+        db.commit()
+
+        registrar_logs(
+            usuario,
+            f"NOTA LANÇADA PARA ALUNO {id_aluno}"
+        )
+
+        print("Nota lançada!")
+
+        
+    except mysql.connector.Error as err:
+        print(f"Erro: {err}")
+
+    finally:
+        cursor.close()
+        db.close()
+
+def listar_notas():
+
+    db = conectar()
+    cursor = db.cursor()
+
+    query = """
+    SELECT
+        n.id_nota,
+        a.nome,
+        m.nome_materia,
+        n.nota,
+        n.bimestre
+    FROM notas n
+
+    JOIN alunos a
+        ON n.fk_id_aluno = a.id_aluno
+
+    JOIN materias m
+        ON n.fk_id_materia = m.id_materia
+    """
+
+    cursor.execute(query)
+
+    notas = cursor.fetchall()
+
+    print("\n======NOTAS======")
+
+    for nota in notas:
+
+        print(
+            f"ID Nota: {nota[0]} | "
+            f"Aluno: {nota[1]} | "
+            f"Matéria: {nota[2]} | "
+            f"Nota: {nota[3]} | "
+            f"Bimestre: {nota[4]}"
+        )
+
+    cursor.close()
+    db.close()
