@@ -718,7 +718,7 @@ def menu():
             listar_alunos()
  
         elif opcao == "4":
-            mostrar_materias()
+            mostrar_materia()
  
         elif opcao == "5":
             lancar_nota()
@@ -730,7 +730,7 @@ def menu():
             listar_notas()
  
         elif opcao == "8":
-            editar_nota()
+            editarnota()
  
         elif opcao == "9":
             remover_nota()
