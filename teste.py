@@ -1,6 +1,26 @@
 import mysql.connector
 from datetime import datetime
 
+# =========================
+# CRIAR BANCO
+# =========================
+
+db = mysql.connector.connect(
+    host="localhost",
+    user="root",
+    password="Senac2026"
+)
+
+cursor = db.cursor()
+
+cursor.execute("CREATE DATABASE IF NOT EXISTS boletim")
+
+cursor.close()
+db.close()
+
+# =========================
+# CONEXÃO
+# =========================
 
 def conectar():
 
@@ -11,16 +31,12 @@ def conectar():
         database="boletim"
     )
 
+# =========================
+# CRIAR TABELAS
+# =========================
+
 db = conectar()
-
 cursor = db.cursor()
-
-
-
-cursor.execute("CREATE DATABASE IF NOT EXISTS boletim")
-
-
-
 
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS usuarios (
@@ -35,8 +51,6 @@ CREATE TABLE IF NOT EXISTS usuarios (
 )
 """)
 
-
-
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS alunos (
 
@@ -50,8 +64,6 @@ CREATE TABLE IF NOT EXISTS alunos (
 )
 """)
 
-
-
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS materias (
 
@@ -60,8 +72,6 @@ CREATE TABLE IF NOT EXISTS materias (
     nome_materia VARCHAR(100) UNIQUE NOT NULL
 )
 """)
-
-
 
 materias = [
     ('Matemática',),
@@ -77,7 +87,7 @@ INSERT IGNORE INTO materias (nome_materia)
 VALUES (%s)
 """, materias)
 
-
+db.commit()
 
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS notas (
@@ -102,8 +112,6 @@ CREATE TABLE IF NOT EXISTS notas (
 )
 """)
 
-
-
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS logs (
 
@@ -117,10 +125,10 @@ CREATE TABLE IF NOT EXISTS logs (
 )
 """)
 
-
+cursor.execute("DROP VIEW IF EXISTS vw_boletim")
 
 cursor.execute("""
-CREATE OR REPLACE VIEW vw_boletim AS
+CREATE VIEW vw_boletim AS
 
 SELECT
 
@@ -143,26 +151,16 @@ a.nome,
 m.nome_materia
 """)
 
-# Salvar alterações
 db.commit()
 
-print("Banco de dados 'boletim' criado com sucesso!")
-
-# Fechar conexão
 cursor.close()
 db.close()
 
+print("Banco de dados criado com sucesso!")
 
-
-def conectar():
-
-    return mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="Senac2026",
-        database="boletim"
-    )
-
+# =========================
+# VALIDAÇÕES
+# =========================
 
 def validar_texto(texto):
 
@@ -173,132 +171,155 @@ def validar_texto(texto):
         return False
 
     return True
-def validaçao_numero(numero):
+
+
+def validar_numero(numero):
+
     if numero.strip() == "":
         return False
 
-    if not numero.isdigit():
+    try:
+        float(numero)
+        return True
+
+    except:
         return False
-    
-    return True
+
 
 def validarcpf(cpf):
-    if cpf.strip() == "":
-        return False
+
     if not cpf.isdigit():
         return False
-    
+
+    if len(cpf) != 11:
+        return False
+
     return True
 
-def registrarlogs(usuario,acão):
+# =========================
+# LOGS
+# =========================
 
+def registrarlogs(usuario, acao):
 
     db = conectar()
+    cursor = db.cursor()
 
-    cursor = db.conectar()
+    query = """
+    INSERT INTO logs
+    (usuario, acao, data_hora)
+    VALUES (%s, %s, %s)
+    """
 
-    cursor.execute()
+    cursor.execute(
+        query,
+        (
+            usuario,
+            acao,
+            datetime.now()
+        )
+    )
 
-query = """
-INSERT INTO logs
-(usuario, ação, data_hora)
-VALUES (%s, %s,%s)
-"""
+    db.commit()
 
-cursor.close()
+    cursor.close()
+    db.close()
+
+# =========================
+# LOGIN
+# =========================
+
 def autenticar(cargo_necessario=None):
 
     tentativas = 5
 
     while tentativas > 0:
 
-        login_usuario = input("login: ")
-        senha = input("senha: ")
+        login_usuario = input("Login: ")
+        senha = input("Senha: ")
 
         db = conectar()
         cursor = db.cursor()
 
         query = """
-        SELECT senha cargo
+        SELECT senha, cargo
         FROM usuarios
         WHERE login = %s
         """
 
-        cursor.execute(query(login_usuario,))
-        
-        resultado = cursor.fetchone  
+        cursor.execute(query, (login_usuario,))
+
+        resultado = cursor.fetchone()
 
         cursor.close()
         db.close()
 
         if resultado:
- 
+
             senha_banco = resultado[0]
             cargo_usuario = resultado[1]
- 
+
             if senha == senha_banco:
- 
+
                 if (
                     cargo_necessario
                     and cargo_usuario != cargo_necessario
                 ):
- 
-                    print(
-                        f"Acesso negado. "
-                        f"Apenas {cargo_necessario}."
-)
- 
+
+                    print(f"Apenas {cargo_necessario}.")
                     return None
- 
+
                 registrarlogs(
                     login_usuario,
                     "LOGIN REALIZADO"
                 )
- 
+
+                print("Login realizado!")
+
                 return login_usuario
-        
+
         tentativas -= 1
- 
-        print(
-            f"Login inválido. "
-            f"Tentativas restantes: {tentativas}"
-        )
- 
+
+        print(f"Tentativas restantes: {tentativas}")
+
     print("Usuário bloqueado.")
     return None
+
+# =========================
+# USUÁRIOS
+# =========================
 
 def cadastrar_usuario():
 
     login = input("Novo login: ")
- 
+
     if login.strip() == "":
         print("Login vazio.")
         return
- 
+
     senha = input("Senha: ")
- 
+
     if senha.strip() == "":
         print("Senha vazia.")
         return
- 
-    print("\nCARGOS:")
-    print("1 - admin")
+
+    print("\n1 - admin")
     print("2 - professor")
- 
+
     opcao = input("Escolha: ")
- 
+
     if opcao == "1":
         cargo = "admin"
- 
+
     elif opcao == "2":
         cargo = "professor"
- 
+
     else:
         print("Cargo inválido.")
         return
- 
+
     db = conectar()
-    cursor = db.conectar()
+    cursor = db.cursor()
 
     query = """
     INSERT INTO usuarios
@@ -307,7 +328,7 @@ def cadastrar_usuario():
     """
 
     try:
- 
+
         cursor.execute(
             query,
             (
@@ -316,17 +337,21 @@ def cadastrar_usuario():
                 cargo
             )
         )
- 
+
         db.commit()
- 
+
         print("Usuário cadastrado!")
- 
+
     except mysql.connector.Error as err:
         print(f"Erro: {err}")
- 
+
     finally:
         cursor.close()
         db.close()
+
+# =========================
+# ALUNOS
+# =========================
 
 def cadastrar_aluno():
 
@@ -336,17 +361,17 @@ def cadastrar_aluno():
         return
 
     nome = input("Nome: ")
-    
+
     if not validar_texto(nome):
         print("Nome inválido.")
         return
 
     idade = input("Idade: ")
 
-    if not validaçao_numero(idade):
+    if not validar_numero(idade):
         print("Idade inválida.")
         return
-    
+
     cpf = input("CPF: ")
 
     if not validarcpf(cpf):
@@ -368,7 +393,7 @@ def cadastrar_aluno():
             query,
             (
                 nome,
-                int(idade),
+                int(float(idade)),
                 cpf
             )
         )
@@ -388,7 +413,6 @@ def cadastrar_aluno():
     finally:
         cursor.close()
         db.close()
-
 
 def listar_alunos():
 
@@ -413,7 +437,52 @@ def listar_alunos():
     cursor.close()
     db.close()
 
-def mostrar_materia(): 
+def remover_aluno():
+
+    usuario = autenticar("admin")
+
+    if not usuario:
+        return
+
+    listar_alunos()
+
+    idaluno = input("Digite o ID do aluno: ")
+
+    if not validar_numero(idaluno):
+        print("ID inválido.")
+        return
+
+    db = conectar()
+    cursor = db.cursor()
+
+    try:
+
+        cursor.execute(
+            "DELETE FROM alunos WHERE id_aluno = %s",
+            (int(float(idaluno)),)
+        )
+
+        db.commit()
+
+        registrarlogs(
+            usuario,
+            f"REMOVEU ALUNO ID {idaluno}"
+        )
+
+        print("Aluno removido!")
+
+    except mysql.connector.Error as err:
+        print(f"Erro: {err}")
+
+    finally:
+        cursor.close()
+        db.close()
+
+# =========================
+# MATÉRIAS
+# =========================
+
+def mostrar_materias():
 
     db = conectar()
     cursor = db.cursor()
@@ -425,18 +494,21 @@ def mostrar_materia():
 
     materias = cursor.fetchall()
 
-    print("\n======MATERIAS======")
+    print("\n===== MATÉRIAS =====")
 
     for materia in materias:
 
         print(
-                      f"ID: {materia[0]} | "
+            f"ID: {materia[0]} | "
             f"Nome: {materia[1]}"
         )
 
     cursor.close()
     db.close()
 
+# =========================
+# NOTAS
+# =========================
 
 def lancar_nota():
 
@@ -444,33 +516,31 @@ def lancar_nota():
 
     if not usuario:
         return
-    
+
     listar_alunos()
-    mostrar_materia()
+    mostrar_materias()
 
-
-    id_aluno = input("\nID do aluno: ")
+    id_aluno = input("ID do aluno: ")
     id_materia = input("ID da matéria: ")
     nota = input("Nota: ")
     bimestre = input("Bimestre: ")
 
-
-    if not validaçao_numero(id_aluno):
-        print("ID do aluno inválido.")
+    if not validar_numero(id_aluno):
+        print("ID inválido.")
         return
 
-    if not validaçao_numero(id_materia):
-        print("ID da matéria inválido.")
+    if not validar_numero(id_materia):
+        print("ID inválido.")
         return
 
-    if not validaçao_numero(nota):
+    if not validar_numero(nota):
         print("Nota inválida.")
         return
 
-    if not validaçao_numero(bimestre):
+    if not validar_numero(bimestre):
         print("Bimestre inválido.")
         return
-    
+
     db = conectar()
     cursor = db.cursor()
 
@@ -484,15 +554,16 @@ def lancar_nota():
     )
     VALUES (%s, %s, %s, %s)
     """
+
     try:
 
         cursor.execute(
             query,
             (
-                int(id_aluno),
-                int(id_materia),
+                int(float(id_aluno)),
+                int(float(id_materia)),
                 float(nota),
-                int(bimestre)
+                int(float(bimestre))
             )
         )
 
@@ -500,12 +571,11 @@ def lancar_nota():
 
         registrarlogs(
             usuario,
-            f"NOTA LANÇADA PARA ALUNO {id_aluno}"
+            f"LANÇOU NOTA PARA ALUNO {id_aluno}"
         )
 
         print("Nota lançada!")
 
-        
     except mysql.connector.Error as err:
         print(f"Erro: {err}")
 
@@ -538,12 +608,12 @@ def listar_notas():
 
     notas = cursor.fetchall()
 
-    print("\n======NOTAS======")
+    print("\n===== NOTAS =====")
 
     for nota in notas:
 
         print(
-            f"ID Nota: {nota[0]} | "
+            f"ID: {nota[0]} | "
             f"Aluno: {nota[1]} | "
             f"Matéria: {nota[2]} | "
             f"Nota: {nota[3]} | "
@@ -553,32 +623,33 @@ def listar_notas():
     cursor.close()
     db.close()
 
+def editar_nota():
 
-def editarnota():
     usuario = autenticar()
+
     if not usuario:
         return
+
     listar_notas()
 
-    id_nota = input("digite o ID  de sua nota: ")
+    id_nota = input("ID da nota: ")
 
-    if not validaçao_numero(id_nota):
-        print("ID invalido")
+    if not validar_numero(id_nota):
+        print("ID inválido.")
         return
-    
-    nova_nota = input("digite sua nova nota: ")
 
+    nova_nota = input("Nova nota: ")
 
-    if not validaçao_numero(nova_nota):
-        print("nota invalida")
-
-
-    novo_bimestre = input("digite um novo bimestre: ")
-
-    if not validaçao_numero(novo_bimestre):
-        print("nota invalida")
+    if not validar_numero(nova_nota):
+        print("Nota inválida.")
         return
-    
+
+    novo_bimestre = input("Novo bimestre: ")
+
+    if not validar_numero(novo_bimestre):
+        print("Bimestre inválido.")
+        return
+
     db = conectar()
     cursor = db.cursor()
 
@@ -594,53 +665,52 @@ def editarnota():
 
         cursor.execute(
             query,
-            (   
+            (
                 float(nova_nota),
-                int(novo_bimestre),
-                int(id_nota)
+                int(float(novo_bimestre)),
+                int(float(id_nota))
             )
-
         )
 
         db.commit()
 
         registrarlogs(
             usuario,
-            f"EDITOU NOTA ID{id_nota}"
+            f"EDITOU NOTA ID {id_nota}"
         )
 
-        print("nota atualizada!")
+        print("Nota atualizada!")
 
     except mysql.connector.Error as err:
-        print(f"o erro foi {err}")
+        print(f"Erro: {err}")
 
     finally:
         cursor.close()
         db.close()
 
-
-    
-    
 def remover_nota():
 
     usuario = autenticar("admin")
 
     if not usuario:
         return
-    
+
     listar_notas()
 
-    id_nota = input("digite o ID da nota que você que remover: ")
-    if not validaçao_numero(id_nota):
-        print("id invalida")
+    id_nota = input("ID da nota: ")
+
+    if not validar_numero(id_nota):
+        print("ID inválido.")
         return
+
     db = conectar()
     cursor = db.cursor()
+
     try:
 
         cursor.execute(
             "DELETE FROM notas WHERE id_nota = %s",
-            (int(id_nota),)
+            (int(float(id_nota)),)
         )
 
         db.commit()
@@ -650,25 +720,29 @@ def remover_nota():
             f"REMOVEU NOTA ID {id_nota}"
         )
 
-        print("nota removida")
+        print("Nota removida!")
 
     except mysql.connector.Error as err:
-        print(f"o erro {err}")
+        print(f"Erro: {err}")
 
     finally:
         cursor.close()
-        db.close
+        db.close()
+
+# =========================
+# BOLETIM
+# =========================
 
 def ver_boletim():
- 
+
     db = conectar()
     cursor = db.cursor()
- 
+
     cursor.execute("""
     SELECT *
     FROM vw_boletim
     """)
- 
+
     resultados = cursor.fetchall()
 
     print("\n===== BOLETIM =====")
@@ -681,7 +755,7 @@ def ver_boletim():
             situacao = "REPROVADO"
 
         print(
-            f"Alunos: {aluno} | "
+            f"Aluno: {aluno} | "
             f"Matéria: {materia} | "
             f"Média: {media:.2f} | "
             f"Situação: {situacao}"
@@ -689,18 +763,24 @@ def ver_boletim():
 
     cursor.close()
     db.close()
-     
+
+# =========================
+# REMOVER USUÁRIO
+# =========================
+
 def remover_usuario():
-    
+
     usuario = autenticar("admin")
 
     if not usuario:
-        return 
+        return
 
-    idusuario = input("digite o id do usuario: ")
+    idusuario = input("Digite o ID do usuário: ")
 
-   
-    
+    if not validar_numero(idusuario):
+        print("ID inválido.")
+        return
+
     db = conectar()
     cursor = db.cursor()
 
@@ -708,18 +788,17 @@ def remover_usuario():
 
         cursor.execute(
             "DELETE FROM usuarios WHERE id_usuario = %s",
-            (int(idusuario),)
-            
+            (int(float(idusuario)),)
         )
-    
+
         db.commit()
 
-        registrar_log(
+        registrarlogs(
             usuario,
             f"REMOVEU USUARIO ID {idusuario}"
         )
 
-        print("usuario removido!")
+        print("Usuário removido!")
 
     except mysql.connector.Error as err:
         print(f"Erro: {err}")
@@ -728,11 +807,14 @@ def remover_usuario():
         cursor.close()
         db.close()
 
+# =========================
+# MENU
+# =========================
 
 def menu():
- 
+
     while True:
- 
+
         print("\n===== SISTEMA ESCOLAR =====")
         print("1 - Cadastrar usuário")
         print("2 - Cadastrar aluno")
@@ -743,50 +825,56 @@ def menu():
         print("7 - Listar notas")
         print("8 - Editar nota")
         print("9 - Remover nota")
-        print("10 - Remover usuario")
+        print("10 - Remover usuário")
+        print("11 - Remover aluno")
         print("0 - Sair")
- 
+
         opcao = input("Escolha: ")
- 
+
         if opcao == "1":
             cadastrar_usuario()
- 
+
         elif opcao == "2":
             cadastrar_aluno()
- 
+
         elif opcao == "3":
             listar_alunos()
- 
+
         elif opcao == "4":
-            mostrar_materia()
- 
+            mostrar_materias()
+
         elif opcao == "5":
             lancar_nota()
- 
+
         elif opcao == "6":
             ver_boletim()
- 
+
         elif opcao == "7":
             listar_notas()
- 
+
         elif opcao == "8":
-            editarnota()
- 
+            editar_nota()
+
         elif opcao == "9":
             remover_nota()
- 
+
         elif opcao == "10":
             remover_usuario()
-        
+
+        elif opcao == "11":
+            remover_aluno()
+
         elif opcao == "0":
- 
+
             print("Sistema encerrado.")
             break
- 
+
         else:
             print("Opção inválida.")
- 
+
+# =========================
+# INICIAR SISTEMA
+# =========================
 
 if __name__ == "__main__":
     menu()
- 
