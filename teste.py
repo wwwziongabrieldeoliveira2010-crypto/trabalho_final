@@ -690,6 +690,45 @@ def ver_boletim():
     cursor.close()
     db.close()
      
+def remover_usuario():
+    
+    usuario = autenticar("admin")
+
+    if not usuario:
+        return 
+
+    idusuario = input("digite o id do usuario: ")
+
+   
+    
+    db = conectar()
+    cursor = db.cursor()
+
+    try:
+
+        cursor.execute(
+            "DELETE FROM usuarios WHERE id_usuario = %s",
+            (int(idusuario),)
+            
+        )
+    
+        db.commit()
+
+        registrar_log(
+            usuario,
+            f"REMOVEU USUARIO ID {idusuario}"
+        )
+
+        print("usuario removido!")
+
+    except mysql.connector.Error as err:
+        print(f"Erro: {err}")
+
+    finally:
+        cursor.close()
+        db.close()
+
+
 def menu():
  
     while True:
@@ -704,6 +743,7 @@ def menu():
         print("7 - Listar notas")
         print("8 - Editar nota")
         print("9 - Remover nota")
+        print("10 - Remover usuario")
         print("0 - Sair")
  
         opcao = input("Escolha: ")
@@ -735,6 +775,9 @@ def menu():
         elif opcao == "9":
             remover_nota()
  
+        elif opcao == "10":
+            remover_usuario()
+        
         elif opcao == "0":
  
             print("Sistema encerrado.")
