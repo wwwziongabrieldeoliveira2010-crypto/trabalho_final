@@ -1,9 +1,6 @@
 import mysql.connector
 from datetime import datetime
 
-# =========================
-# CRIAR BANCO
-# =========================
 
 db = mysql.connector.connect(
     host="localhost",
@@ -18,9 +15,6 @@ cursor.execute("CREATE DATABASE IF NOT EXISTS boletim")
 cursor.close()
 db.close()
 
-# =========================
-# CONEXÃO
-# =========================
 
 def conectar():
 
@@ -104,7 +98,7 @@ CREATE TABLE IF NOT EXISTS notas (
 
     FOREIGN KEY (fk_id_aluno)
     REFERENCES alunos(id_aluno)
-    ON DELETE CASCADE,
+    ON DELETE CASCADE, 
 
     FOREIGN KEY (fk_id_materia)
     REFERENCES materias(id_materia)
