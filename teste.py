@@ -801,6 +801,30 @@ def remover_usuario():
         cursor.close()
         db.close()
 
+def listar_usuarios():
+
+    db = conectar()
+    cursor = db.cursor()
+
+    cursor.execute("SELECT * FROM usuarios")
+
+    usuario = cursor.fetchall()
+
+    print("\n===== usuarios =====")
+
+    for usuario in usuario:
+
+        print(
+            f"ID: {usuario[0]} | "
+            f"Nome: {usuario[1]} | "
+            f"Senha: {usuario[2]} | "
+            f"Cargo: {usuario[3]}"
+        )
+
+    cursor.close()
+    db.close()
+
+
 # =========================
 # MENU
 # =========================
@@ -821,6 +845,7 @@ def menu():
         print("9 - Remover nota")
         print("10 - Remover usuário")
         print("11 - Remover aluno")
+        print("12 - Listar usuarios")
         print("0 - Sair")
 
         opcao = input("Escolha: ")
@@ -857,6 +882,9 @@ def menu():
 
         elif opcao == "11":
             remover_aluno()
+
+        elif opcao == "12":
+            listar_usuarios()
 
         elif opcao == "0":
 
