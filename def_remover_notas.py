@@ -2,7 +2,7 @@ from def_conectar import conectar
 from def_autenticar import autenticar
 from def_listar_notas import listar_notas 
 from def_registrarlogs import registrarlogs
-from def_vaçidar_numero import validar_numero
+from def_validar_numero import validar_numero
 
 def remover_nota():
 
