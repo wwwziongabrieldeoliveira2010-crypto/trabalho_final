@@ -1,4 +1,6 @@
 from def_conectar import conectar
+from def_autenticar import autenticar
+from def_registrarlogs import registrarlogs
 
 import mysql.connector
 
