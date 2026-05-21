@@ -1,4 +1,5 @@
 from def_conectar import conectar
+from def_registrarlogs import registrarlogs
 
 def autenticar(cargo_necessario=None):
 
