@@ -1,3 +1,5 @@
+from def_conectar import conectar
+
 def mostrar_materias():
 
     db = conectar()
