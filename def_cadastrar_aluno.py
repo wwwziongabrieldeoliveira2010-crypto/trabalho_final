@@ -1,6 +1,9 @@
 from def_conectar import conectar
 from def_autenticar import autenticar
 from def_registrarlogs import registrarlogs
+from def_validarcpf import validarcpf
+from def_validar_numero import validar_numero
+from def_validar_texto import validar_texto
 
 import mysql.connector
 
