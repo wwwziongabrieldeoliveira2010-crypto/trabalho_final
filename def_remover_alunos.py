@@ -2,6 +2,7 @@ from def_conectar import conectar
 from def_autenticar import autenticar
 from def_listar_alunos import listar_alunos 
 from def_registrarlogs import registrarlogs
+from def_validar_numero import validar_numero
 
 def remover_aluno():
 
