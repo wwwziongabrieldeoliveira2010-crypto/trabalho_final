@@ -2,6 +2,10 @@ from arquivo_cadastros import *
 from arquivo_de_remocao import *
 from arquivo_listar import *
 import time
+import random 
+
+delay = random.randint(1, 4)
+
 
 def interface():
     print("\n|=====================================================|"
@@ -37,3 +41,4 @@ def loading():
         print("🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦")
         time.sleep(2)
         
+loading()
