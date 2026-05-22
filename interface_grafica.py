@@ -3,7 +3,7 @@ from arquivo_de_remocao import *
 from arquivo_listar import *
 import time
 import random 
-
+import os 
 delay = random.randint(1, 4)
 
 
@@ -27,17 +27,30 @@ def interface():
 
 
 def loading():
+        os.system('cls' if os.name == 'nt' else 'clear')
         print("iniciando cadastro")
+        time.sleep(delay)
         print("⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛")
         time.sleep(delay)
+        os.system('cls' if os.name == 'nt' else 'clear')
+        print("iniciando cadastro")
         print("🟦🟦⬛⬛⬛⬛⬛⬛⬛⬛⬛")
-        time.sleep(delay)
+        os.system('cls' if os.name == 'nt' else 'clear')
+        print("iniciando cadastro")
         print("🟦🟦🟦⬛⬛⬛⬛⬛⬛⬛⬛")
         time.sleep(delay)
+        os.system('cls' if os.name == 'nt' else 'clear')
+        print("iniciando cadastro")
         print("🟦🟦🟦🟦🟦🟦🟦⬛⬛⬛⬛")
         time.sleep(delay)
+        os.system('cls' if os.name == 'nt' else 'clear')
+        print("iniciando cadastro")
         print("🟦🟦🟦🟦🟦🟦🟦🟦🟦⬛⬛")
         time.sleep(delay)
+        os.system('cls' if os.name == 'nt' else 'clear')
+        print("iniciando cadastro")
+        os.system('cls' if os.name == 'nt' else 'clear')
+        print("iniciando cadastro")
         print("🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦")
         time.sleep(2)
         
