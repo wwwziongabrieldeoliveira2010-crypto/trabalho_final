@@ -3,11 +3,11 @@ from arquivo_listar import *
 from arquivo_de_remocao import *
 from arquivo_cadastros import *
 from arquivo_utilitario import *
-
+from arquivo__de_adicionar_e_editar import *
 while True:
      interface()
     
-     op = input("Escolha um numero de 0 a 11")
+     op = input("Escolha uma opção: ")
      validar_numero(op)
 
      if op == "1":

@@ -23,7 +23,6 @@ def interface():
     print("11- |Remover aluno|")
     print("0 - |Sair|")
 
-
 def loading():
     for i in range(12):
 
@@ -37,4 +36,3 @@ def loading():
 
         time.sleep(delay)
         
-loading()
