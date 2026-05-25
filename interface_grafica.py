@@ -1,10 +1,8 @@
-from arquivo_cadastros import *
-from arquivo_de_remocao import *
-from arquivo_listar import *
+
 import time
 import random 
 import os 
-delay = random.randint(1, 4)
+delay = random.randint(1, 3)
 
 
 def interface():
@@ -27,31 +25,16 @@ def interface():
 
 
 def loading():
+    for i in range(12):
+
         os.system('cls' if os.name == 'nt' else 'clear')
-        print("iniciando cadastro")
+
+        print("Iniciando cadastro")
+
+        barra = "🟦" * i + "⬛" * (11 - i)
+
+        print(barra)
+
         time.sleep(delay)
-        print("⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛")
-        time.sleep(delay)
-        os.system('cls' if os.name == 'nt' else 'clear')
-        print("iniciando cadastro")
-        print("🟦🟦⬛⬛⬛⬛⬛⬛⬛⬛⬛")
-        os.system('cls' if os.name == 'nt' else 'clear')
-        print("iniciando cadastro")
-        print("🟦🟦🟦⬛⬛⬛⬛⬛⬛⬛⬛")
-        time.sleep(delay)
-        os.system('cls' if os.name == 'nt' else 'clear')
-        print("iniciando cadastro")
-        print("🟦🟦🟦🟦🟦🟦🟦⬛⬛⬛⬛")
-        time.sleep(delay)
-        os.system('cls' if os.name == 'nt' else 'clear')
-        print("iniciando cadastro")
-        print("🟦🟦🟦🟦🟦🟦🟦🟦🟦⬛⬛")
-        time.sleep(delay)
-        os.system('cls' if os.name == 'nt' else 'clear')
-        print("iniciando cadastro")
-        os.system('cls' if os.name == 'nt' else 'clear')
-        print("iniciando cadastro")
-        print("🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦")
-        time.sleep(2)
         
 loading()
