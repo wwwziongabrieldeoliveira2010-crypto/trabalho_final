@@ -9,7 +9,7 @@ def menu():
           interface()
      
           op = input("Escolha uma opção: ")
-          validar_numero(op)
+          validar_texto(op)
 
           if op == "1":
                cadastrar_usuario()
