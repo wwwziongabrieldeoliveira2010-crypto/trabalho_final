@@ -1,9 +1,10 @@
-import mysql.connector
 from datetime import datetime
+import mysql.connector
 
+# =========================
+# CONEXÃO MYSQL
+# =========================
 
-
-# CONEXÃO
 db = mysql.connector.connect(
     host="localhost",
     user="root",
@@ -12,15 +13,18 @@ db = mysql.connector.connect(
 
 cursor = db.cursor()
 
+# =========================
 # CRIAR BANCO
+# =========================
+
 cursor.execute("CREATE DATABASE IF NOT EXISTS boletim")
 
-# USAR BANCO
 cursor.execute("USE boletim")
 
 # =========================
 # TABELA USUÁRIOS
 # =========================
+
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS usuarios (
 
@@ -37,6 +41,7 @@ CREATE TABLE IF NOT EXISTS usuarios (
 # =========================
 # TABELA ALUNOS
 # =========================
+
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS alunos (
 
@@ -53,6 +58,7 @@ CREATE TABLE IF NOT EXISTS alunos (
 # =========================
 # TABELA MATÉRIAS
 # =========================
+
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS materias (
 
@@ -62,14 +68,17 @@ CREATE TABLE IF NOT EXISTS materias (
 )
 """)
 
+# =========================
 # INSERIR MATÉRIAS
+# =========================
+
 materias = [
-    ('Matemática',),
-    ('Português',),
-    ('História',),
-    ('Geografia',),
-    ('Ciências',),
-    ('Inglês',)
+    ("Matemática",),
+    ("Português",),
+    ("História",),
+    ("Geografia",),
+    ("Ciências",),
+    ("Inglês",)
 ]
 
 cursor.executemany("""
@@ -80,6 +89,7 @@ VALUES (%s)
 # =========================
 # TABELA NOTAS
 # =========================
+
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS notas (
 
@@ -106,6 +116,7 @@ CREATE TABLE IF NOT EXISTS notas (
 # =========================
 # TABELA LOGS
 # =========================
+
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS logs (
 
@@ -122,6 +133,7 @@ CREATE TABLE IF NOT EXISTS logs (
 # =========================
 # VIEW BOLETIM
 # =========================
+
 cursor.execute("""
 CREATE OR REPLACE VIEW vw_boletim AS
 
@@ -147,33 +159,16 @@ m.nome_materia
 """)
 
 # =========================
-# INSERIR ALUNO
+# FINALIZAR
 # =========================
-cursor.execute("""
-INSERT INTO alunos (nome, idade, cpf)
-VALUES (%s, %s, %s)
-""", ("João", 16, "12345678901"))
 
-# PEGAR ID DO ALUNO
-id_aluno = cursor.lastrowid
-
-# =========================
-# INSERIR NOTA
-# =========================
-cursor.execute("""
-INSERT INTO notas (nota, bimestre, fk_id_aluno, fk_id_materia)
-VALUES (%s, %s, %s, %s)
-""", (8.5, 1, id_aluno, 1))
-
-# SALVAR ALTERAÇÕES
 db.commit()
 
 print("Banco de dados criado com sucesso!")
-print("Aluno e nota cadastrados!")
 
-# FECHAR CONEXÃO
 cursor.close()
 db.close()
+ 
 
 def conectar():
 
