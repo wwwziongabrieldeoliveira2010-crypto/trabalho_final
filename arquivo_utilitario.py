@@ -2,6 +2,8 @@ import mysql.connector
 from datetime import datetime
 
 
+
+# CONEXÃO
 db = mysql.connector.connect(
     host="localhost",
     user="root",
@@ -10,52 +12,57 @@ db = mysql.connector.connect(
 
 cursor = db.cursor()
 
+# CRIAR BANCO
 cursor.execute("CREATE DATABASE IF NOT EXISTS boletim")
 
+# USAR BANCO
 cursor.execute("USE boletim")
 
- 
+# =========================
+# TABELA USUÁRIOS
+# =========================
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS usuarios (
- 
+
     id_usuario INT AUTO_INCREMENT PRIMARY KEY,
- 
+
     login VARCHAR(50) UNIQUE NOT NULL,
- 
+
     senha VARCHAR(255) NOT NULL,
- 
+
     cargo VARCHAR(20) NOT NULL
 )
 """)
- 
- 
- 
+
+# =========================
+# TABELA ALUNOS
+# =========================
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS alunos (
- 
+
     id_aluno INT AUTO_INCREMENT PRIMARY KEY,
- 
+
     nome VARCHAR(100) NOT NULL,
- 
+
     idade INT NOT NULL,
- 
+
     cpf CHAR(11) UNIQUE NOT NULL
 )
 """)
- 
- 
- 
+
+# =========================
+# TABELA MATÉRIAS
+# =========================
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS materias (
- 
+
     id_materia INT AUTO_INCREMENT PRIMARY KEY,
- 
+
     nome_materia VARCHAR(100) UNIQUE NOT NULL
 )
 """)
- 
- 
- 
+
+# INSERIR MATÉRIAS
 materias = [
     ('Matemática',),
     ('Português',),
@@ -64,91 +71,109 @@ materias = [
     ('Ciências',),
     ('Inglês',)
 ]
- 
+
 cursor.executemany("""
 INSERT IGNORE INTO materias (nome_materia)
 VALUES (%s)
 """, materias)
- 
- 
- 
+
+# =========================
+# TABELA NOTAS
+# =========================
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS notas (
- 
+
     id_nota INT AUTO_INCREMENT PRIMARY KEY,
- 
+
     nota FLOAT NOT NULL,
- 
+
     bimestre INT NOT NULL,
- 
+
     fk_id_aluno INT NOT NULL,
- 
+
     fk_id_materia INT NOT NULL,
- 
+
     FOREIGN KEY (fk_id_aluno)
     REFERENCES alunos(id_aluno)
     ON DELETE CASCADE,
- 
+
     FOREIGN KEY (fk_id_materia)
     REFERENCES materias(id_materia)
     ON DELETE CASCADE
 )
 """)
- 
- 
- 
+
+# =========================
+# TABELA LOGS
+# =========================
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS logs (
- 
+
     id_log INT AUTO_INCREMENT PRIMARY KEY,
- 
+
     usuario VARCHAR(100) NOT NULL,
- 
+
     acao VARCHAR(255) NOT NULL,
- 
+
     data_hora DATETIME NOT NULL
 )
 """)
- 
- 
- 
+
+# =========================
+# VIEW BOLETIM
+# =========================
 cursor.execute("""
 CREATE OR REPLACE VIEW vw_boletim AS
- 
+
 SELECT
- 
+
     a.nome AS aluno,
- 
+
     m.nome_materia AS materia,
- 
+
     AVG(n.nota) AS media
- 
+
 FROM notas n
- 
+
 JOIN alunos a
 ON n.fk_id_aluno = a.id_aluno
- 
+
 JOIN materias m
 ON n.fk_id_materia = m.id_materia
- 
+
 GROUP BY
 a.nome,
 m.nome_materia
 """)
- 
-# Salvar alterações
+
+# =========================
+# INSERIR ALUNO
+# =========================
+cursor.execute("""
+INSERT INTO alunos (nome, idade, cpf)
+VALUES (%s, %s, %s)
+""", ("João", 16, "12345678901"))
+
+# PEGAR ID DO ALUNO
+id_aluno = cursor.lastrowid
+
+# =========================
+# INSERIR NOTA
+# =========================
+cursor.execute("""
+INSERT INTO notas (nota, bimestre, fk_id_aluno, fk_id_materia)
+VALUES (%s, %s, %s, %s)
+""", (8.5, 1, id_aluno, 1))
+
+# SALVAR ALTERAÇÕES
 db.commit()
- 
-print("Banco de dados 'boletim' criado com sucesso!")
- 
-# Fechar conexão
+
+print("Banco de dados criado com sucesso!")
+print("Aluno e nota cadastrados!")
+
+# FECHAR CONEXÃO
 cursor.close()
 db.close()
- 
-
-cursor.close()
-db.close()
-
 
 def conectar():
 
