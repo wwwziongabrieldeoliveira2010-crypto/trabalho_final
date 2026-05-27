@@ -13,7 +13,7 @@ def menu():
 
           if op == "1":
                cadastrar_usuario()
-               
+               loading()
           elif op == "2":
                cadastrar_aluno()
 

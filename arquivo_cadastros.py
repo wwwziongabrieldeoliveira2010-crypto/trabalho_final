@@ -1,5 +1,5 @@
 from arquivo_utilitario import *
-
+from interface_grafica import loading
 
 
 
