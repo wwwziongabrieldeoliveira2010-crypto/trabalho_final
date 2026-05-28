@@ -9,11 +9,11 @@ def menu():
           interface()
      
           op = input("Escolha uma opção: ")
-          validar_texto(op)
+          
 
           if op == "1":
                cadastrar_usuario()
-               loading()
+
           elif op == "2":
                cadastrar_aluno()
 
@@ -55,4 +55,6 @@ def menu():
                print("░░░▄██▄▄▀▀▀▀▀▀▀▄▄██▄░░░")
                print("░▄█░█▀▀█▀▀▀█▀▀▀█▀▀█░█▄░")
                break
-               break
+
+          else:
+               print("opção invalida")

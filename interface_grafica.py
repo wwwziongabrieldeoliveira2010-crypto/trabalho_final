@@ -1,8 +1,7 @@
 
 import time
-import random 
 import os 
-delay = random.randint(1, 3)
+
 
 
 def interface():
@@ -37,5 +36,5 @@ def loading():
 
         print(barra)
 
-        time.sleep(delay)
+        time.sleep(1)
         

@@ -54,8 +54,8 @@ def cadastrar_usuario():
 
         db.commit()
 
-        print("Usuário cadastrado!")
-
+        loading()
+        
     except mysql.connector.Error as err:
         print(f"Erro: {err}")
 
