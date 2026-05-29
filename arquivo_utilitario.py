@@ -1,6 +1,6 @@
 from datetime import datetime
 import mysql.connector
-
+from getpass import getpass
 # =========================
 # CONEXÃO MYSQL
 # =========================
@@ -253,8 +253,7 @@ def autenticar(cargo_necessario=None):
     while tentativas > 0:
 
         login_usuario = input("Login: ")
-        senha = input("Senha: ")
-
+        senha = getpass("Senha: ")
         db = conectar()
         cursor = db.cursor()
 
