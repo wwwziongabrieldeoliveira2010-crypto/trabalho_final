@@ -1,5 +1,5 @@
 from arquivo_utilitario import *
-from interface_grafica import loading
+
 
 
 
@@ -54,7 +54,7 @@ def cadastrar_usuario():
 
         db.commit()
 
-        loading()
+        
         
     except mysql.connector.Error as err:
         print(f"Erro: {err}")
@@ -109,7 +109,7 @@ def cadastrar_aluno():
                 cpf
             )
         )
-
+        loading()
         db.commit()
 
         registrarlogs(

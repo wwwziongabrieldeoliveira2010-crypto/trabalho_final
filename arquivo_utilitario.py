@@ -248,7 +248,7 @@ def registrarlogs(usuario, acao):
 
 def autenticar(cargo_necessario=None):
 
-    tentativas = 5
+    tentativas = 500000000000000
 
     while tentativas > 0:
 

@@ -46,5 +46,5 @@ def loading():
         os.system('cls' if os.name == 'nt' else 'clear')
         ("✅ Cadastro iniciado com sucesso!")
 
-loading()
+
         

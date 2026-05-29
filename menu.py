@@ -13,7 +13,7 @@ def menu():
 
           if op == "1":
                cadastrar_usuario()
-
+               
           elif op == "2":
                cadastrar_aluno()
 
@@ -45,7 +45,7 @@ def menu():
                remover_aluno()
 
           elif op == "0":
-               print("Saindo...")
+               print("Até a proxima, Fique com o suns...")
                print("░░░░░▄▄▀▀▀▀▀▀▀▀▀▄▄░░░░░")
                print("░░░░█░░░░░░░░░░░░░█░░░░")
                print("░░░█░░░░░░░░░░▄▄▄░░█░░░")
