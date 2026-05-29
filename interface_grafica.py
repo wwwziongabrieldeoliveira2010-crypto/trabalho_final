@@ -26,15 +26,25 @@ def interface():
     print("              |  [0] - Sair             |")
     print("              ===========================")
 def loading():
-    for i in range(12):
+      for i in range(12):
 
         os.system('cls' if os.name == 'nt' else 'clear')
 
-        print("Iniciando cadastro")
+        print("=" * 30)
+        print("   INICIANDO CADASTRO")
+        print("=" * 30)
 
-        barra = "🟦" * i + "⬛" * (11 - i)
+        barra = "🟦" * i + "⬛" * (12 - i)
 
-        print(barra)
+        porcentagem = int((i / 11) * 100)
 
-        time.sleep(1)
+        print(f"\n[{barra}]")
+        print(f"\nCarregando... {porcentagem}%")
+
+        time.sleep(0.2)
+
+        os.system('cls' if os.name == 'nt' else 'clear')
+        ("✅ Cadastro iniciado com sucesso!")
+
+loading()
         
