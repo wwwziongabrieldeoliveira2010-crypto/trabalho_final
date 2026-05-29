@@ -6,7 +6,7 @@ from arquivo_listar import *
 
 def editar_nota():
 
-    usuario = autenticar()
+    usuario = autenticar("professor")
 
     if not usuario:
         return
@@ -74,7 +74,7 @@ def editar_nota():
 
 def lancar_nota():
 
-    usuario = autenticar()
+    usuario = autenticar("professor")
 
     if not usuario:
         return
