@@ -5,7 +5,7 @@ def listar_alunos():
     db = conectar()
     cursor = db.cursor()
 
-    cursor.execute("SELECT * FROM alunos")
+    cursor.execute("""SELECT * FROM alunos ORDER BY nome ASC""")
 
     alunos = cursor.fetchall()
 
@@ -30,7 +30,7 @@ def mostrar_materias():
 
     cursor.execute("""
     SELECT id_materia, nome_materia
-    FROM materias
+    FROM materia 
     """)
 
     materias = cursor.fetchall()
@@ -96,7 +96,8 @@ def ver_boletim():
 
     cursor.execute("""
     SELECT *
-    FROM vw_boletim
+    FROM vw_boletim 
+    ORDER BY aluno ASC
     """)
 
     resultados = cursor.fetchall()
