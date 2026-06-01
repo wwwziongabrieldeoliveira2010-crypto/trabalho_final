@@ -1,6 +1,7 @@
 from datetime import datetime
 import mysql.connector
 from getpass import getpass
+import sys
 # =========================
 # CONEXÃO MYSQL
 # =========================
@@ -248,7 +249,7 @@ def registrarlogs(usuario, acao):
 
 def autenticar(cargo_necessario=None):
 
-    tentativas = 500000000000000
+    tentativas = 4
 
     while tentativas > 0:
 
@@ -299,4 +300,5 @@ def autenticar(cargo_necessario=None):
         print(f"Tentativas restantes: {tentativas}")
 
     print("Usuário bloqueado.")
+    sys.exit()
     return None
