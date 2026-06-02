@@ -45,7 +45,7 @@ def menu():
                remover_aluno()
 
           elif op == "12":
-               listar_usuario()
+               listar_usuarios()
 
           elif op == "0":
                print("Até a proxima, Fique com o suns...")
