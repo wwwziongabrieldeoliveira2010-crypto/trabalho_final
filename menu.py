@@ -35,16 +35,16 @@ def menu():
           elif op == "8":
                editar_nota()
 
-          elif op == "9":
+          elif op == "10":
                remover_nota()
 
-          elif op == "10":
+          elif op == "11":
                remover_usuario()
 
-          elif op == "11":
+          elif op == "12":
                remover_aluno()
 
-          elif op == "12":
+          elif op == "9":
                listar_usuarios()
 
           elif op == "0":
