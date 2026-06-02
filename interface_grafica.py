@@ -23,7 +23,7 @@ def interface():
     print("              |  [9] - Remover nota     |")
     print("              |  [10] - Remover usuario |")
     print("              |  [11] - Remover aluno   |")
-    print("              |  [12] - listar usuario  |")
+    print("              |  [12] - listar usuarios  |")
     print("              |  [0] - Sair             |")
     print("              ===========================")
 def loading():
