@@ -98,7 +98,7 @@ def cadastrar_aluno():
     (nome, idade, cpf)
     VALUES (%s, %s, %s)
     """
-
+    
     try:
 
         cursor.execute(

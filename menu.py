@@ -7,9 +7,9 @@ from arquivo__de_adicionar_e_editar import *
 def menu():
      while True:
           interface()
+          
      
           op = input("Escolha uma opção: ")
-          
 
           if op == "1":
                cadastrar_usuario()

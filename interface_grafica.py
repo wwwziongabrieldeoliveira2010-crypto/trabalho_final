@@ -10,22 +10,24 @@ def interface():
                     "\n|======================================================|\n")
 
     print("              ===========================")
-    print("              |  [1] - Cadastrar usuário|")
-    print("              |  [2] - Cadastrar aluno  |")
-    print("              |=========================|")
-    print("              |  [3] - Listar alunos    |")
-    print("              |  [4] - Mostrar matérias |")
-    print("              |  [5] - Lançar nota      |")
-    print("              |  [6] - Ver boletim      |")
-    print("              |  [7] - Listar notas     |")
-    print("              |  [8] - Editar nota      |")
-    print("              |=========================|")
-    print("              |  [9] - Remover nota     |")
-    print("              |  [10] - Remover usuario |")
-    print("              |  [11] - Remover aluno   |")
-    print("              |  [12] - listar usuarios  |")
-    print("              |  [0] - Sair             |")
-    print("              ===========================")
+    print("              |  [1] -  Cadastrar usuário|")
+    print("              |  [2] -  Cadastrar aluno  |")
+    print("              |========================= |")
+    print("              |  [3] -  Listar alunos    |")
+    print("              |  [4] -  Mostrar matérias |")
+    print("              |  [5] -  Lançar nota      |")
+    print("              |  [6] -  Ver boletim      |")
+    print("              |  [7] -  Listar notas     |")
+    print("              |  [8] -  ditar nota       |")
+    print("              |  [9] -  Listar usuarios  |") 
+    print("              |========================= |")
+    print("              |  [10] -  Remover nota    |")
+    print("              |  [11] - Remover usuario  |")
+    print("              |  [12] - Remover aluno    |")
+    print("              |  [0] -  Sair             |")
+    print("              ============================")
+
+
 def loading():
       for i in range(12):
 
@@ -49,4 +51,3 @@ def loading():
 
 
         
-loading()

@@ -121,12 +121,7 @@ def lancar_nota():
 
         cursor.execute(
             query,
-            (
-                int(float(id_aluno)),
-                int(float(id_materia)),
-                float(nota),
-                int(float(bimestre))
-            )
+            (int(float(id_aluno)),int(float(id_materia)),float(nota),int(float(bimestre)))
         )
 
         db.commit()
