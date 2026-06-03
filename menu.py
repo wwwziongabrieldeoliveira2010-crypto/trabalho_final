@@ -48,7 +48,7 @@ def menu():
                listar_usuarios()
 
           elif op == "0":
-               print("Até a proxima, Fique com o suns...")
+               print("Até a proxima, Fique com o sans...")
                print("░░░░░▄▄▀▀▀▀▀▀▀▀▀▄▄░░░░░")
                print("░░░░█░░░░░░░░░░░░░█░░░░")
                print("░░░█░░░░░░░░░░▄▄▄░░█░░░")
