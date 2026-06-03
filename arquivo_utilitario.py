@@ -291,7 +291,7 @@ def autenticar(cargo_necessario=None):
                     "LOGIN REALIZADO"
                 )
 
-                print("Login realizado!")
+                print("APROVADO, BEM VINDO DE VOLTA CHEFE!")
 
                 return login_usuario
 

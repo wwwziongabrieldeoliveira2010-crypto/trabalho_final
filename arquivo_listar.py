@@ -67,6 +67,7 @@ def listar_notas():
 
     JOIN materias m
         ON n.fk_id_materia = m.id_materia
+
     """
 
     cursor.execute(query)
@@ -124,6 +125,11 @@ def ver_boletim():
 
 
 def listar_usuarios():
+
+    usuario = autenticar("admin")
+
+    if not usuario:
+        return
 
     db = conectar()
     cursor = db.cursor()
