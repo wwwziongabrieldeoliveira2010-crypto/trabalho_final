@@ -30,7 +30,7 @@ def mostrar_materias():
 
     cursor.execute("""
     SELECT id_materia, nome_materia
-    FROM materia 
+    FROM materias ORDER BY id_materia, nome_materia ASC
     """)
 
     materias = cursor.fetchall()
