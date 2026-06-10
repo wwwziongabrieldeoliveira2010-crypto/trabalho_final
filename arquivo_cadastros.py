@@ -5,6 +5,11 @@ from interface_grafica import loading
 
 def cadastrar_usuario():
 
+    usuario = autenticar("admin")
+
+    if not usuario:
+        return
+
     login = input("Novo login: ")
 
     if login.strip() == "":
