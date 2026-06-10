@@ -27,4 +27,4 @@ Projeto desenvolvido por Zion , Davi Martins, Emanoel, Samuel Rocca. utilizando 
 ### 1. Instale as dependências
 
 ```bash
-pip install mysql-connector-python (no terminal)
+pip install mysql-connector-python 
