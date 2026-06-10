@@ -3,79 +3,46 @@ from arquivo_listar import *
 
 def remover_aluno():
 
-    usuario = autenticar("admin")
+    usuario = autenticar("professor")
 
     if not usuario:
         return
 
-    print("===============MENUSINHO================\n" \
-    "      1-APGAR POR ID\n"
-    "      2-APAGAR TUDOOOOOOO ALLL\n" \
-    "=============================================")
-    op = input("escolha uma opção: ")
-    if op ==  "1":
-        listar_alunos()
-        idaluno = input("Digite o ID do aluno: ")
+    
+    
+    listar_alunos()
+    idaluno = input("Digite o ID do aluno: ")
 
-        if not validar_numero(idaluno):
+    if not validar_numero(idaluno):
             print("ID inválido.")
             return
 
-        db = conectar()
-        cursor = db.cursor()
+    db = conectar()
+    cursor = db.cursor()
 
-        try:
+    try:
 
-            cursor.execute(
-                "DELETE FROM alunos WHERE id_aluno = %s",
-                (int(float(idaluno)),)
-            )
+        cursor.execute(
+            "DELETE FROM alunos WHERE id_aluno = %s",
+            (int(float(idaluno)),)
+        )
 
-            db.commit()
+        db.commit()
 
-            registrarlogs(
-                usuario,
-                f"REMOVEU ALUNO ID {idaluno}"
-            )
+        registrarlogs(
+            usuario,
+            f"REMOVEU ALUNO ID {idaluno}"
+        )
 
-            print("Aluno removido!")
+        print("Aluno removido!")
 
-        except mysql.connector.Error as err:
-            print(f"Erro: {err}")
+    except mysql.connector.Error as err:
+        print(f"Erro: {err}")
 
-        finally:
-            cursor.close()
-            db.close()
-    elif op == "2":
-        listar_alunos()
-        usuario = autenticar("professor")
-
-        if not validar_numero(op):
-            print("parabéns por ser um macaco e conseguir errar a porra do numero")
-            return
-        db = conectar()
-        cursor = db.cursor()
-
-        try:
-
-            cursor.execute(
-                "TRUNCATE TABLE alunos")
-            
-
-            db.commit()
-
-            registrarlogs(
-                usuario,
-                f"REMOVEU ALUNO ID {idaluno}"
-            )
-
-            print("Aluno removido!")
-        except mysql.connector.Error as err:
-            print(f"Erro: {err}")
-
-        finally:
-            cursor.close()
-            db.close()
+    finally:
+        cursor.close()
+        db.close()
+    
 def remover_nota():
 
     usuario = autenticar("admin")

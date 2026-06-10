@@ -2,11 +2,6 @@ from arquivo_utilitario import *
 
 def listar_alunos():
     
-    usuario = autenticar("professor")
-    
-    if not usuario:
-        return  
-    
 
     db = conectar()
     cursor = db.cursor()
