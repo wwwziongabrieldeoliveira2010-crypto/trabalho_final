@@ -98,7 +98,11 @@ def lancar_nota():
     if not validar_numero(nota):
         print("Nota inválida.")
         return
-
+    
+    elif nota < 0:
+        print("invalido")
+        return
+    
     if not validar_numero(bimestre):
         print("Bimestre inválido.")
         return
