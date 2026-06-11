@@ -209,6 +209,18 @@ def validar_numero(numero):
     except:
         return False
 
+def validar_nota(nota):
+    try:
+        nota = float(nota)
+        return 0 <= nota <= 10
+    except:
+        return False
+
+def validar_bimestre(bimestre):
+    return bimestre.isdigit() and 1 <= int(bimestre) <= 4
+
+def validar_inteiro(valor):
+    return valor.isdigit()
 
 def validarcpf(cpf):
 
