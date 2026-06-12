@@ -85,6 +85,12 @@ def lancar_nota():
     id_aluno = input("ID do aluno: ")
     id_materia = input("ID da matéria: ")
     nota = input("Nota: ")
+    nota = float(nota)
+
+if nota < 0 or nota > 10:
+    print("A nota deve estar entre 0 e 10.")
+    return
+    
     bimestre = input("Bimestre: ")
 
     if not validar_numero(id_aluno):
