@@ -87,9 +87,9 @@ def lancar_nota():
     nota = input("Nota: ")
     nota = float(nota)
 
-if nota < 0 or nota > 10:
-    print("A nota deve estar entre 0 e 10.")
-    return
+    if nota < 0 or nota > 10:
+        print("A nota deve estar entre 0 e 10.")
+            return
     
     bimestre = input("Bimestre: ")
 
