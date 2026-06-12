@@ -89,7 +89,7 @@ def lancar_nota():
 
     if nota < 0 or nota > 10:
         print("A nota deve estar entre 0 e 10.")
-            return
+        return
     
     bimestre = input("Bimestre: ")
 
