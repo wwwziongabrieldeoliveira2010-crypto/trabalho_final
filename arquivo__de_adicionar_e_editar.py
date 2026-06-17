@@ -99,7 +99,7 @@ def lancar_nota():
         print("Nota inválida.")
         return
     
-    elif nota < 0:
+    if nota < 0:
         print("invalido")
         return
     
