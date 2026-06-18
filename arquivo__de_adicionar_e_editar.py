@@ -3,7 +3,6 @@ from arquivo_listar import *
 
 
 
-
 def editar_nota():
 
     usuario = autenticar("professor")
@@ -15,19 +14,19 @@ def editar_nota():
 
     id_nota = input("ID da nota: ")
 
-    if not validar_numero(id_nota):
+    if not validar_inteiro(id_nota):
         print("ID inválido.")
         return
 
     nova_nota = input("Nova nota: ")
 
-    if not validar_numero(nova_nota):
+    if not validar_nota(nova_nota):
         print("Nota inválida.")
         return
 
     novo_bimestre = input("Novo bimestre: ")
 
-    if not validar_numero(novo_bimestre):
+    if not validar_bimestre(novo_bimestre):
         print("Bimestre inválido.")
         return
 
@@ -48,19 +47,23 @@ def editar_nota():
             query,
             (
                 float(nova_nota),
-                int(float(novo_bimestre)),
-                int(float(id_nota))
+                int(novo_bimestre),
+                int(id_nota)
             )
         )
 
         db.commit()
 
-        registrarlogs(
-            usuario,
-            f"EDITOU NOTA ID {id_nota}"
-        )
+        if cursor.rowcount == 0:
+            print("Nota não encontrada.")
+        else:
 
-        print("Nota atualizada!")
+            registrarlogs(
+                usuario,
+                f"EDITOU NOTA ID {id_nota}"
+            )
+
+            print("Nota atualizada com sucesso!")
 
     except mysql.connector.Error as err:
         print(f"Erro: {err}")
@@ -70,9 +73,8 @@ def editar_nota():
         db.close()
 
 
-
-
 def lancar_nota():
+
 
     usuario = autenticar("professor")
 
@@ -87,28 +89,44 @@ def lancar_nota():
     nota = input("Nota: ")
     bimestre = input("Bimestre: ")
 
-    if not validar_numero(id_aluno):
-        print("ID inválido.")
+    if not validar_inteiro(id_aluno):
+        print("ID do aluno inválido.")
         return
 
-    if not validar_numero(id_materia):
-        print("ID inválido.")
+    if not validar_inteiro(id_materia):
+        print("ID da matéria inválido.")
         return
 
-    if not validar_numero(nota):
+    if not validar_nota(nota):
         print("Nota inválida.")
         return
-    
-    if nota < 0:
-        print("invalido")
-        return
-    
-    if not validar_numero(bimestre):
+
+    if not validar_bimestre(bimestre):
         print("Bimestre inválido.")
         return
 
     db = conectar()
     cursor = db.cursor()
+
+try:
+
+        cursor.execute(
+            "SELECT id_aluno FROM alunos WHERE id_aluno = %s",
+            (int(id_aluno),)
+        )
+
+        if not cursor.fetchone():
+            print("Aluno não encontrado.")
+            return
+
+        cursor.execute(
+            "SELECT id_materia FROM materias WHERE id_materia = %s",
+            (int(id_materia),)
+        )
+
+        if not cursor.fetchone():
+            print("Matéria não encontrada.")
+            return
 
     query = """
     INSERT INTO notas
@@ -121,25 +139,29 @@ def lancar_nota():
     VALUES (%s, %s, %s, %s)
     """
 
-    try:
-
-        cursor.execute(
-            query,
-            (int(float(id_aluno)),int(float(id_materia)),float(nota),int(float(bimestre)))
+    cursor.execute(
+        query,
+        (
+            int(id_aluno),
+            int(id_materia),
+            float(nota),
+            int(bimestre)
         )
+    )
 
-        db.commit()
+    db.commit()
 
-        registrarlogs(
-            usuario,
-            f"LANÇOU NOTA PARA ALUNO {id_aluno}"
-        )
+    registrarlogs(
+        usuario,
+        f"LANÇOU NOTA PARA ALUNO {id_aluno}"
+    )
 
-        print("Nota lançada!")
+    print("Nota lançada com sucesso!")
 
-    except mysql.connector.Error as err:
+except mysql.connector.Error as err:
         print(f"Erro: {err}")
 
-    finally:
+finally:
         cursor.close()
         db.close()
+
