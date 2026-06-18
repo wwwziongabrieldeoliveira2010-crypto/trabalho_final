@@ -2,6 +2,7 @@ from datetime import datetime
 import mysql.connector
 from getpass import getpass
 import sys
+
 # =========================
 # CONEXÃO MYSQL
 # =========================
@@ -274,7 +275,7 @@ def autenticar(cargo_necessario=None):
         SELECT senha, cargo
         FROM usuarios
         WHERE login = %s
-        """,
+        """
 
 
         cursor.execute(query, (login_usuario,))
