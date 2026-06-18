@@ -108,7 +108,7 @@ def lancar_nota():
     db = conectar()
     cursor = db.cursor()
 
-try:
+    try:
 
         cursor.execute(
             "SELECT id_aluno FROM alunos WHERE id_aluno = %s",
@@ -128,40 +128,40 @@ try:
             print("Matéria não encontrada.")
             return
 
-    query = """
-    INSERT INTO notas
-    (
-        fk_id_aluno,
-        fk_id_materia,
-        nota,
-        bimestre
-    )
-    VALUES (%s, %s, %s, %s)
-    """
-
-    cursor.execute(
-        query,
+        query = """
+        INSERT INTO notas
         (
-            int(id_aluno),
-            int(id_materia),
-            float(nota),
-            int(bimestre)
+            fk_id_aluno,
+            fk_id_materia,
+            nota,
+            bimestre
         )
-    )
+        VALUES (%s, %s, %s, %s)
+        """
 
-    db.commit()
+        cursor.execute(
+            query,
+            (
+                int(id_aluno),
+                int(id_materia),
+                float(nota),
+                int(bimestre)
+            )
+        )
 
-    registrarlogs(
-        usuario,
-        f"LANÇOU NOTA PARA ALUNO {id_aluno}"
-    )
+        db.commit()
 
-    print("Nota lançada com sucesso!")
+        registrarlogs(
+            usuario,
+            f"LANÇOU NOTA PARA ALUNO {id_aluno}"
+        )
 
-except mysql.connector.Error as err:
-        print(f"Erro: {err}")
+        print("Nota lançada com sucesso!")
 
-finally:
-        cursor.close()
-        db.close()
+    except mysql.connector.Error as err:
+            print(f"Erro: {err}")
+
+    finally:
+            cursor.close()
+            db.close()
 
