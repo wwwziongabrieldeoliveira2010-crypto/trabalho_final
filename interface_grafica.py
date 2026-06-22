@@ -18,7 +18,7 @@ def interface():
     print("              |  [5] -  Lançar nota      |")
     print("              |  [6] -  Ver boletim      |")
     print("              |  [7] -  Listar notas     |")
-    print("              |  [8] -  ditar nota       |")
+    print("              |  [8] -  eitar nota       |")
     print("              |  [9] -  Listar usuarios  |") 
     print("              |========================= |")
     print("              |  [10] -  Remover nota    |")
