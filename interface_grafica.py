@@ -21,7 +21,7 @@ def interface():
     print("              |  [8] -  eitar nota       |")
     print("              |  [9] -  Listar usuarios  |") 
     print("              |========================= |")
-    print("              |  [10] -  Remover nota    |")
+    print("              |  [10] - Remover nota     |")
     print("              |  [11] - Remover usuario  |")
     print("              |  [12] - Remover aluno    |")
     print("              |  [0] -  Sair             |")
