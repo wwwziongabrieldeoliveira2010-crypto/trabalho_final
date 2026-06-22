@@ -100,9 +100,7 @@ CREATE TABLE IF NOT EXISTS notas (
     nota FLOAT NOT NULL,
 
     bimestre INT NOT NULL,
-
-    fk_id_aluno INT NOT NULL,
-
+               
     fk_id_materia INT NOT NULL,
 
     FOREIGN KEY (fk_id_aluno)
