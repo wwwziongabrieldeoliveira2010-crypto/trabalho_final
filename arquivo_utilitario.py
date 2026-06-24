@@ -166,7 +166,19 @@ m.nome_materia
 
 db.commit()
 
-print("Banco de dados criado com sucesso!")
+cursor.execute("""
+    SELECT SCHEMA_NAME 
+    FROM INFORMATION_SCHEMA.SCHEMATA 
+    WHERE SCHEMA_NAME = 'boletim'
+""")
+
+resultado = cursor.fetchone()
+
+if resultado:
+    print("O banco de dados 'boletim' já existe.")
+else:
+    print("Banco não existe. Criando...")
+    cursor.execute("CREATE DATABASE boletim")
 
 cursor.close()
 db.close()
