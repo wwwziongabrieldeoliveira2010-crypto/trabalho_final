@@ -247,7 +247,7 @@ def validarcpf(cpf):
 
 def registrarlogs(usuario, acao):
 
-    db = conectar()
+    
     cursor = db.cursor()
 
     query = """
