@@ -76,10 +76,6 @@ def editar_nota():
 def lancar_nota():
 
 
-    usuario = autenticar("professor")
-
-    if not usuario:
-        return
 
     listar_alunos()
     mostrar_materias()
@@ -100,6 +96,8 @@ def lancar_nota():
     if not validar_nota(nota):
         print("Nota inválida.")
         return
+
+        
 
     if not validar_bimestre(bimestre):
         print("Bimestre inválido.")
