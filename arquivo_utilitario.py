@@ -112,7 +112,7 @@ CREATE TABLE IF NOT EXISTS notas (
     FOREIGN KEY (fk_id_materia)
     REFERENCES materias(id_materia)
     ON DELETE CASCADE
-)
+)    
 """)
 
 # =========================
@@ -247,7 +247,7 @@ def validarcpf(cpf):
 
 def registrarlogs(usuario, acao):
 
-    
+    db = conectar()
     cursor = db.cursor()
 
     query = """

@@ -76,6 +76,10 @@ def editar_nota():
 def lancar_nota():
 
 
+    usuario = autenticar("professor")
+
+    if not usuario:
+        return
 
     listar_alunos()
     mostrar_materias()

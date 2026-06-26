@@ -26,7 +26,10 @@ def remover_aluno():
             "DELETE FROM alunos WHERE id_aluno = %s",
             (int(float(idaluno)),)
         )
-
+    
+        if cursor.rowcount == 0:
+            print("Aluno não existe!")
+            return
         db.commit()
 
         registrarlogs(
@@ -67,6 +70,11 @@ def remover_nota():
             "DELETE FROM notas WHERE id_nota = %s",
             (int(float(id_nota)),)
         )
+
+        if cursor.rowcount == 0:
+            print("Aluno não existe!")
+            return
+     
 
         db.commit()
 
@@ -109,6 +117,12 @@ def remover_usuario():
             "DELETE FROM usuarios WHERE id_usuario = %s",
             (int(float(idusuario)),)
         )
+
+        
+        if cursor.rowcount == 0:
+            print("Aluno não existe!")
+            return
+        
 
         db.commit()
 
