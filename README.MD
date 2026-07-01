@@ -16,7 +16,7 @@ Projeto desenvolvido por Zion , Davi Martins, Emanoel, Samuel Rocca. utilizando 
 - Sistema de autenticação
 - Registro de logs
 
-## Regras de Negócios
+##  Regras de Negócios
 - Apenas usuários autenticados poderão acessar o sistema.
 - Apenas usuários com permissão de administrador poderão cadastrar e remover usuários.
 - Apenas usuários autorizados poderão cadastrar, editar ou remover alunos.
