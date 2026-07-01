@@ -4,6 +4,27 @@
 
 Projeto desenvolvido por Zion , Davi Martins, Emanoel, Samuel Rocca. utilizando Python e MySQL para gerenciamento escolar.
 
+
+
+
+Requisitos Funcionais
+1-O sistema deve permitir o login de usuários.
+2-O sistema deve cadastrar alunos.
+3-O sistema deve editar alunos.
+4-O sistema deve excluir alunos.
+5-O sistema deve cadastrar disciplinas.
+6-O sistema deve lançar notas.
+7-O sistema deve calcular médias automaticamente.
+8-O sistema deve emitir boletins dos alunos.
+
+Requisitos Não Funcionais
+1-O sistema deve possuir interface simples e de fácil utilização.
+2-O sistema deve responder rapidamente às operações realizadas.
+3-O sistema deve proteger os dados por meio de autenticação de usuários.
+4-O sistema deve armazenar os dados em um banco de dados MySQL.
+5-O sistema deve validar os dados informados antes de gravá-los no banco.
+
+
 ## Funcionalidades
 
 - Cadastro de usuários
